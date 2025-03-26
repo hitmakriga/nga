@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGA Design Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0000FF;
+            --text-color: #333;
+            --bg-color: #f3f4f6;
+            --header-bg: white;
+            --nav-bg: #1e3a8a;
+            --button-bg: white;
+            --button-hover: #93c5fd;
+            --card-bg: white;
+            --border-color: #ddd;
+            --footer-color: #666;
+        }
+
+        .dark-theme {
+            --primary-color: #ffd700;
+            --secondary-color: #777;
+            --text-color: #ffffff;
+            --bg-color: #1a1a1a;
+            --header-bg: #333;
+            --nav-bg: #444;
+            --button-bg: #555;
+            --button-hover: #777;
+            --card-bg: #2d2d2d;
+            --border-color: #555;
+            --footer-color: #aaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        header {
+            background: var(--header-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: rotate(15deg);
+        }
+
+        .header-content h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .header-content p {
+            font-size: 1rem;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav {
+            background: var(--nav-bg);
+            padding: 12px;
+            position: sticky;
+            top: 90px;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav button {
+            background: var(--button-bg);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav button:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            display: none;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .full-width-image {
+            width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Home Section */
+        .welcome-text {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        /* Services Section */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .service-price {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin: 15px 0;
+            color: var(--secondary-color);
+        }
+
+        .service-description {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            aspect-ratio: 1/1;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+        }
+
+        /* Employees Section */
+        .employee-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+        }
+
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .employee-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .employee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .employee-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            border: 3px solid var(--primary-color);
+        }
+
+        .employee-name {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .employee-position {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .employee-of-month {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Partners Section */
+        .partners-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .partner-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .partner-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .partner-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .partner-description {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        /* Contacts Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .contact-info {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .contact-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 1rem;
+            color: var(--footer-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background-color: var(--secondary-color);
+        }
+
+        .floating-button img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 25px;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://flagcdn.com/lv.svg');
+            transition: transform 0.3s;
+        }
+
+        .language-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Story Section */
+        .story-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .story-block {
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .story-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .story-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .values-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .values-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .values-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .header-actions {
+                margin-top: 15px;
+                justify-content: center;
+            }
+
+            nav {
+                top: auto;
+                position: static;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            nav button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section {
+                padding: 25px 15px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .services-container, 
+            .portfolio-grid,
+            .employee-grid,
+            .contact-container,
+            .partners-container {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-button {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-button img {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .employee-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .partners-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container" onclick="showSection('home')">
+            <img src="https://i.ibb.co/C5vV2dTZ/Rush-1.png" alt="NGA Design Solutions Logo" class="logo">
+            <div class="header-content">
+                <h1>NGA Design Solutions</h1>
+                <p data-lang="lv">Vairāk nekā dizains</p>
+                <p data-lang="en" style="display: none;">More than design</p>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <button class="language-toggle" onclick="toggleLanguage()"></button>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <button data-lang="lv" onclick="showSection('pakalpojumi')">
+                <i class="fas fa-concierge-bell"></i> Pakalpojumi
+            </button>
+            <button data-lang="en" onclick="showSection('pakalpojumi')" style="display: none;">
+                <i class="fas fa-concierge-bell"></i> Services
+            </button>
+            <button data-lang="lv" onclick="showSection('stasts')">
+                <i class="fas fa-history"></i> Uzņēmuma stāsts
+            </button>
+            <button data-lang="en" onclick="showSection('stasts')" style="display: none;">
+                <i class="fas fa-history"></i> Company Story
+            </button>
+            <button data-lang="lv" onclick="showSection('portfolio')">
+                <i class="fas fa-images"></i> Portfolio
+            </button>
+            <button data-lang="en" onclick="showSection('portfolio')" style="display: none;">
+                <i class="fas fa-images"></i> Portfolio
+            </button>
+            <button data-lang="lv" onclick="showSection('darbinieki')">
+                <i class="fas fa-users"></i> Mūsu darbinieki
+            </button>
+            <button data-lang="en" onclick="showSection('darbinieki')" style="display: none;">
+                <i class="fas fa-users"></i> Our Team
+            </button>
+            <button data-lang="lv" onclick="showSection('partneri')">
+                <i class="fas fa-handshake"></i> Partneri
+            </button>
+            <button data-lang="en" onclick="showSection('partneri')" style="display: none;">
+                <i class="fas fa-handshake"></i> Partners
+            </button>
+            <button data-lang="lv" onclick="showSection('kontakti')">
+                <i class="fas fa-envelope"></i> Kontakti
+            </button>
+            <button data-lang="en" onclick="showSection('kontakti')" style="display: none;">
+                <i class="fas fa-envelope"></i> Contacts
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <h2 class="section-title" data-lang="lv">Sākums</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Home</h2>
+            
+            <p class="welcome-text" data-lang="lv">Laipni lūdzam NGA Design Solutions! Mēs piedāvājam izcilus dizaina risinājumus, kas palīdzēs attīstīt jūsu biznesu.</p>
+            <p class="welcome-text" data-lang="en" style="display: none;">Welcome to NGA Design Solutions! We offer excellent design solutions to help grow your business.</p>
+            
+            <img src="https://i.ibb.co/hFTT7DYF/FIND-YOUR-VIBE-2.png" alt="Design showcase" class="full-width-image">
+            <img src="https://i.ibb.co/YTZyL9Wd/FIND-YOUR-VIBE-4.png" alt="Creative work" class="full-width-image">
+            <img src="https://i.ibb.co/G33m0854/FIND-YOUR-VIBE-5.png" alt="Branding examples" class="full-width-image">
+        </section>
+
+        <!-- Services Section -->
+        <section id="pakalpojumi" class="section">
+            <h2 class="section-title" data-lang="lv">Pakalpojumi</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Services</h2>
+            
+            <p class="section-subtitle" data-lang="lv">Mūsu uzņēmums piedāvā plašu pakalpojumu klāstu sākot ar profila bilžu izstrādi un beidzot ar uzņēmumu pilnu noformēšanu.</p>
+            <p class="section-subtitle" data-lang="en" style="display: none;">Our company offers a wide range of services, from profile picture design to full company branding.</p>
+            
+            <div class="services-container">
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Profila bildes izstrāde</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Profile Picture Design</h3>
+                    <div class="service-price">5€</div>
+                    <p class="service-description" data-lang="lv">Profesionāla profila bilde jebkuram sociālajam tīklam vai personīgajam portfolio</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Professional profile picture for any social network or personal portfolio</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Logotipa izstrāde</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Logo Design</h3>
+                    <div class="service-price">100€</div>
+                    <p class="service-description" data-lang="lv">Unikāls un atpazīstams logotips, kas atspoguļo jūsu uzņēmuma identitāti</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Unique and recognizable logo that reflects your company identity</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Marketplace kartiņas</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Marketplace Cards</h3>
+                    <div class="service-price">15€</div>
+                    <p class="service-description" data-lang="lv">Piesaistošas produktu kartiņas jebkuram e-komercijas platformam</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Attractive product cards for any e-commerce platform</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Veikala preču kartiņas</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Store Product Cards</h3>
+                    <div class="service-price">10€</div>
+                    <p class="service-description" data-lang="lv">Profesionālas preču kartiņas fiziskajiem veikaliem</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Professional product cards for physical stores</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Baneri sociālajiem tīkliem</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Social Media Banners</h3>
+                    <div class="service-price">10€</div>
+                    <p class="service-description" data-lang="lv">Piesaistoši baneri Facebook, Instagram un citiem platformām</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Eye-catching banners for Facebook, Instagram and other platforms</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3 class="service-title" data-lang="lv">Biznesa identitātes izstrāde</h3>
+                    <h3 class="service-title" data-lang="en" style="display: none;">Business Identity Design</h3>
+                    <div class="service-price">1000€</div>
+                    <p class="service-description" data-lang="lv">Pilnīga uzņēmuma vizuālā identitāte, ieskaitot logotipu, krāsu shēmu, tipogrāfiju un stilu vadlīnijas</p>
+                    <p class="service-description" data-lang="en" style="display: none;">Complete company visual identity including logo, color scheme, typography and style guidelines</p>
+                </div>
+            </div>
+            
+            <p class="service-description" style="text-align: center; margin-top: 30px;" data-lang="lv">Cenas norādītas par minimālo komplektu. Cenas var atšķirties atkarībā no daudziem faktoriem.</p>
+            <p class="service-description" style="text-align: center; margin-top: 30px; display: none;" data-lang="en">Prices are for the minimum package. Prices may vary depending on many factors.</p>
+        </section>
+
+        <!-- Story Section -->
+        <section id="stasts" class="section">
+            <h2 class="section-title" data-lang="lv">Uzņēmuma stāsts</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Company Story</h2>
+            
+            <div class="story-section">
+                <div class="story-block">
+                    <h3 class="story-title" data-lang="lv">Kas mūs iedvesmo?</h3>
+                    <h3 class="story-title" data-lang="en" style="display: none;">What inspires us?</h3>
+                    <div class="story-content">
+                        <p data-lang="lv">Mēs ticam, ka dizains ir spēcīgs instruments, kas var palīdzēt uzņēmumiem izveidot spēcīgu zīmolu, piesaistīt jaunus klientus un palielināt pārdošanas apjomus. Mēs strādājam ar dažādu lielumu un nozaru uzņēmumiem, lai palīdzētu viņiem izveidot efektīvas mājas lapas, logotipus, reklāmas materiālus un citus dizaina risinājumus.</p>
+                        <p data-lang="en" style="display: none;">We believe that design is a powerful tool that can help companies build a strong brand, attract new customers, and increase sales. We work with businesses of various sizes and industries to help them create effective websites, logos, advertising materials, and other design solutions.</p>
+                    </div>
+                </div>
+                
+                <div class="story-block">
+                    <h3 class="story-title" data-lang="lv">Mūsu komanda</h3>
+                    <h3 class="story-title" data-lang="en" style="display: none;">Our Team</h3>
+                    <div class="story-content">
+                        <p data-lang="lv">Mūsu komanda sastāv no pieredzējušiem dizaineriem un mārketinga speciālistiem, kuriem ir aizraušanās ar savu darbu. Mēs esam apņēmušies nodrošināt mūsu klientiem augstas kvalitātes pakalpojumus un palīdzēt viņiem sasniegt savus mērķus.</p>
+                        <p data-lang="en" style="display: none;">Our team consists of experienced designers and marketing specialists who are passionate about their work. We are committed to providing our clients with high-quality services and helping them achieve their goals.</p>
+                    </div>
+                </div>
+                
+                <div class="story-block">
+                    <h3 class="story-title" data-lang="lv">Mūsu vērtības</h3>
+                    <h3 class="story-title" data-lang="en" style="display: none;">Our Values</h3>
+                    <div class="story-content">
+                        <ul class="values-list">
+                            <li data-lang="lv"><b>Inovācija:</b> Mēs vienmēr meklējam jaunus un inovatīvus veidus, kā palīdzēt mūsu klientiem izteikt sevi.</li>
+                            <li data-lang="en" style="display: none;"><b>Innovation:</b> We are always looking for new and innovative ways to help our clients express themselves.</li>
+                            <li data-lang="lv"><b>Profesionalitāte:</b> Mēs esam apņēmušies nodrošināt mūsu klientiem augstas kvalitātes pakalpojumus.</li>
+                            <li data-lang="en" style="display: none;"><b>Professionalism:</b> We are committed to providing our clients with high-quality services.</li>
+                            <li data-lang="lv"><b>Komunikācija:</b> Mēs uzskatām, ka laba komunikācija ir atslēga veiksmīgai sadarbībai.</li>
+                            <li data-lang="en" style="display: none;"><b>Communication:</b> We believe that good communication is the key to successful collaboration.</li>
+                            <li data-lang="lv"><b>Partnerība:</b> Mēs strādājam kopā ar mūsu klientiem, lai sasniegtu viņu mērķus.</li>
+                            <li data-lang="en" style="display: none;"><b>Partnership:</b> We work together with our clients to achieve their goals.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="story-block">
+                    <h3 class="story-title" data-lang="lv">Mūsu misija</h3>
+                    <h3 class="story-title" data-lang="en" style="display: none;">Our Mission</h3>
+                    <div class="story-content">
+                        <p data-lang="lv">Mēs vēlamies kļūt par uzticamu partneri, kas palīdzēs mūsu klientiem gūt panākumus savā biznesā.</p>
+                        <p data-lang="en" style="display: none;">We want to become a trusted partner that helps our clients succeed in their business.</p>
+                    </div>
+                </div>
+                
+                <div class="story-block">
+                    <h3 class="story-title" data-lang="lv">Mūsu vīzija</h3>
+                    <h3 class="story-title" data-lang="en" style="display: none;">Our Vision</h3>
+                    <div class="story-content">
+                        <p data-lang="lv">Mēs vēlamies kļūt par vadošo dizaina un reklāmas aģentūru Latvijā.</p>
+                        <p data-lang="en" style="display: none;">We want to become the leading design and advertising agency in Latvia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="section">
+            <h2 class="section-title">Portfolio</h2>
+            
+            <div class="portfolio-grid">
+                <a href="https://www.bekereja.lv/" target="_blank" class="portfolio-item">
+                    <img src="https://tse1.mm.bing.net/th?id=OIG4.lfxGTeQW4BygfnSZdDpj&pid=ImgGn" alt="Projekts 1" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Beķereja</h3>
+                        <h3 data-lang="en" style="display: none;">Bekereja</h3>
+                        <p data-lang="lv">Maizes izstrādājumi</p>
+                        <p data-lang="en" style="display: none;">Bakery products</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.annasdarzs.lv/" target="_blank" class="portfolio-item">
+                    <img src="https://tse1.mm.bing.net/th?id=OIG2.XRuLscQehr5ibU0rH2Xg&pid=ImgGn" alt="Projekts 2" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Kafejnīca</h3>
+                        <h3 data-lang="en" style="display: none;">Cafe</h3>
+                        <p data-lang="lv">Interjera dizains</p>
+                        <p data-lang="en" style="display: none;">Interior design</p>
+                    </div>
+                </a>
+                
+                <a href="#" class="portfolio-item">
+                    <img src="https://tse3.mm.bing.net/th?id=OIG2.UnuyUne5uic6Yf7zKe_9&pid=ImgGn" alt="Projekts 3" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Restorāns</h3>
+                        <h3 data-lang="en" style="display: none;">Restaurant</h3>
+                        <p data-lang="lv">Brandings</p>
+                        <p data-lang="en" style="display: none;">Branding</p>
+                    </div>
+                </a>
+                
+                <a href="#" class="portfolio-item">
+                    <img src="https://tse1.mm.bing.net/th?id=OIG1.6OrEWYcAuOTbPVxPkSHl&pid=ImgGn" alt="Projekts 4" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Veikals</h3>
+                        <h3 data-lang="en" style="display: none;">Store</h3>
+                        <p data-lang="lv">Preču dizains</p>
+                        <p data-lang="en" style="display: none;">Product design</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.airbnb.com/rooms/3828868" target="_blank" class="portfolio-item">
+                    <img src="https://tse3.mm.bing.net/th?id=OIG2.sE7Jmq7whJpoR53JEDxV&pid=ImgGn" alt="Projekts 5" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Airbnb</h3>
+                        <h3 data-lang="en" style="display: none;">Airbnb</h3>
+                        <p data-lang="lv">Interjera noformējums</p>
+                        <p data-lang="en" style="display: none;">Interior design</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.domuss.lv/en/commercial-spaces/" tarhet="_blank" class="portfolio-item">
+                    <img src="https://tse2.mm.bing.net/th?id=OIG4.s5TbiDy6D0LChATYpJkd&pid=ImgGn" alt="Projekts 6" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Bārs</h3>
+                        <h3 data-lang="en" style="display: none;">Bar</h3>
+                        <p data-lang="lv">Celtnes projektēšana</p>
+                        <p data-lang="en" style="display: none;">Building projection</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.starbucks.com/" target="_blank" class="portfolio-item">
+                    <img src="https://tse2.mm.bing.net/th?id=OIG2.m9Uma0wB4A2_cbBdQOdk&pid=ImgGn" alt="Projekts 7" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">Starbucks</h3>
+                        <h3 data-lang="en" style="display: none;">Starbucks</h3>
+                        <p data-lang="lv">Kafijas tases</p>
+                        <p data-lang="en" style="display: none;">Coffee cups</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cropp.com/lv/lv/" target="_blank" class="portfolio-item">
+                    <img src="https://tse1.mm.bing.net/th?id=OIG4.o0aP_qZ8edB9lKU7VY0S&pid=ImgGn" alt="Projekts 8" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 data-lang="lv">CROPP</h3>
+                        <h3 data-lang="en" style="display: none;">CROPP</h3>
+                        <p data-lang="lv">Krekla dizaina izstrāde</p>
+                        <p data-lang="en" style="display: none;">T-shirt creation</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Employees Section -->
+        <section id="darbinieki" class="section">
+            <h2 class="section-title" data-lang="lv">Mūsu komanda</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Our Team</h2>
+            
+            <div class="employee-intro">
+                <p data-lang="lv">Mūsu uzņēmumā "NGA DESIGN SOLUTIONS" strādā tikai profesionāļi, jo šis ir vienīgais veids, kā mēs varam uzturēt tik labu kvalitāti un tik mazus termiņus. Tāpat mūsu uzņēmums pieturas koncepcijai KYS (know your specialist).</p>
+                <p data-lang="en" style="display: none;">At "NGA DESIGN SOLUTIONS" we employ only professionals, as this is the only way we can maintain such high quality and short deadlines. Our company also adheres to the KYS (know your specialist) concept.</p>
+            </div>
+            
+            <div class="employee-grid">
+                <div class="employee-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPbE_sKXPTz9cMxrxGWUOPCBDFVK_QBQzYIw&s" alt="Baba Ņina" class="employee-image">
+                    <h3 class="employee-name">Baba Ņina</h3>
+                    <p class="employee-position" data-lang="lv">Apkopēja</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Cleaner</p>
+                    <div class="employee-of-month" data-lang="lv">Mēneša darbiniece</div>
+                    <div class="employee-of-month" data-lang="en" style="display: none;">Employee of the Month</div>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/hR6HnfMJ/Screenshot-2025-03-07-09-15-47-863-com-android-chrome-edit.jpg" alt="Jānis Bērziņš" class="employee-image">
+                    <h3 class="employee-name">Jānis Bērziņš</h3>
+                    <p class="employee-position" data-lang="lv">Projektu vadītājs</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Project Manager</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/W40G6MyF/Screenshot-2025-03-01-23-53-32-576-org-telegram-messenger-edit.jpg" alt="Gandonio" class="employee-image">
+                    <h3 class="employee-name">Gandonio</h3>
+                    <p class="employee-position" data-lang="lv">Produktu nodaļas vadītājs</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Head of Product</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.pinimg.com/736x/e6/33/3d/e6333de3752a868f9105121bc06b9b89.jpg" alt="Pēteris Ozols" class="employee-image">
+                    <h3 class="employee-name">Pēteris Ozols</h3>
+                    <p class="employee-position" data-lang="lv">Konsultants</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Consultant</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/rGj60wMx/1742410274750.jpg" alt="Valters Tropiņš" class="employee-image">
+                    <h3 class="employee-name">Valters Tropiņš</h3>
+                    <p class="employee-position" data-lang="lv">Dungeon master</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Dungeon Master</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/zhRLKR6P/IMG-20240513-WA0008.jpg" alt="Mārtiņš Upītis un Upītis Mārtiņš" class="employee-image">
+                    <h3 class="employee-name">Mārtiņš Upītis & Upītis Mārtiņš</h3>
+                    <p class="employee-position" data-lang="lv">Prototipu veidotāji</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Prototype Developers</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.pinimg.com/736x/f1/70/01/f17001b596dd0434a3cda3325e15a788.jpg" alt="Oļegs" class="employee-image">
+                    <h3 class="employee-name">Oļegs</h3>
+                    <p class="employee-position" data-lang="lv">Satura veidotājs</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Content Creator</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/zHfFPrqm/1742850143348.jpg" alt="Emīls Māris Ikerts" class="employee-image">
+                    <h3 class="employee-name">Emīls Māris Ikerts</h3>
+                    <p class="employee-position" data-lang="lv">CRM speciālists</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">CRM specialist</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/4ZgQWrWr/IMG-20250130-WA0001.jpg" alt="Kristiāns Bramanis" class="employee-image">
+                    <h3 class="employee-name">Kristiāns Bramanis</h3>
+                    <p class="employee-position" data-lang="lv">"Man būs 9 matemātikā"</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">"I will get a 9 in math"</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/ZpdPpSw1/IMG-20250210-WA0019.jpg" alt="Magnuss Rūsis" class="employee-image">
+                    <h3 class="employee-name">Magnuss Rūsis</h3>
+                    <p class="employee-position" data-lang="lv">Dzeltenāks par dzeltenu</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Yellower than yellow</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/Txc9YzQf/IMG-20250320-WA0003.jpg" alt="Markuss Adrians Repša" class="employee-image">
+                    <h3 class="employee-name">Markuss Adrians Repša</h3>
+                    <p class="employee-position" data-lang="lv">Pensionāru konsultants</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Pensioner Consultant</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/7x4VMmY2/1742498846901.jpg" alt="Anrijs offenders" class="employee-image">
+                    <h3 class="employee-name">Anrijs offenders</h3>
+                    <p class="employee-position" data-lang="lv">Neprofesionālais mehāniķis</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Non-professional Mechanic</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/pTHhM5K/1742849431092.jpg" alt="Kristers Grauba" class="employee-image">
+                    <h3 class="employee-name">Kristers Grauba</h3>
+                    <p class="employee-position" data-lang="lv">Galvenais Degustators</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Head of the degustation department</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/YF9MZKkY/1742849474649.jpg" alt="Markuss Sedlers" class="employee-image">
+                    <h3 class="employee-name">Markuss Sedlers</h3>
+                    <p class="employee-position" data-lang="lv">Kolaborāciju nodaļas vadītājs</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Head of colaborational unit</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.ibb.co/KcH3Lrb3/1742851252976.jpg" alt="Edvards Āboltiņš" class="employee-image">
+                    <h3 class="employee-name">Edvards Āboltiņš</h3>
+                    <p class="employee-position" data-lang="lv">Krāsu speciālists</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">Color specialist</p>
+                </div>
+                
+                <div class="employee-card">
+                    <img src="https://i.pinimg.com/736x/c8/51/42/c85142767052a1ad4fc75ecd665f00a4.jpg" alt="Tazik Bibzyan" class="employee-image">
+                    <h3 class="employee-name">Tazik Bibzyan</h3>
+                    <p class="employee-position" data-lang="lv">SMM speciālists</p>
+                    <p class="employee-position" data-lang="en" style="display: none;">SMM specialist</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners Section -->
+        <section id="partneri" class="section">
+            <h2 class="section-title" data-lang="lv">Mūsu partneri</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Our Partners</h2>
+            
+            <p class="section-subtitle" data-lang="lv">Mēs sadarbojamies ar vadošajiem uzņēmumiem no dažādām nozarēm, lai nodrošinātu visaugstākās kvalitātes pakalpojumus.</p>
+            <p class="section-subtitle" data-lang="en" style="display: none;">We cooperate with leading companies from various industries to provide the highest quality services.</p>
+            
+            <div class="partners-container">
+                <div class="partner-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Wipro_Primary_Logo_Color_RGB.svg/1200px-Wipro_Primary_Logo_Color_RGB.svg.png" alt="Wipro" class="partner-logo">
+                    <h3 class="partner-name">Wipro</h3>
+                    <p class="partner-description" data-lang="lv">IT risinājumi un konsultācijas</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">IT solutions and consulting</p>
+                </div>
+                
+                <div class="partner-card">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/09/Google-Symbol.png" alt="Google" class="partner-logo">
+                    <h3 class="partner-name">Google</h3>
+                    <p class="partner-description" data-lang="lv">Digitālā mārketinga partneris</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">Digital marketing partner</p>
+                </div>
+                
+                <div class="partner-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1200px-Apple_logo_black.svg.png" alt="Apple" class="partner-logo">
+                    <h3 class="partner-name">Apple</h3>
+                    <p class="partner-description" data-lang="lv">Dizaina tehnoloģijas</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">Design technologies</p>
+                </div>
+                
+                <div class="partner-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/1200px-Microsoft_logo_%282012%29.svg.png" alt="Microsoft" class="partner-logo">
+                    <h3 class="partner-name">Microsoft</h3>
+                    <p class="partner-description" data-lang="lv">Programmatūras risinājumi</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">Software solutions</p>
+                </div>
+                
+                <div class="partner-card">
+                    <img src="https://loghi-famosi.com/wp-content/uploads/2020/04/Instagram-icon-Logo-2016-oggi-650x366.png" alt="Adobe" class="partner-logo">
+                    <h3 class="partner-name">Instagram</h3>
+                    <p class="partner-description" data-lang="lv">Reklāmas kanāls</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">Provader of the advertisment</p>
+                </div>
+                
+                <div class="partner-card">
+                    <img src="https://i.ibb.co/tTb0V5Hn/1742932748463.jpg" alt="IBM" class="partner-logo">
+                    <h3 class="partner-name">Oļegs Sidorenko</h3>
+                    <p class="partner-description" data-lang="lv">Uzņēmuma "Monkey" vadītājs</p>
+                    <p class="partner-description" data-lang="en" style="display: none;">Owner of the "monkey"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacts Section -->
+        <section id="kontakti" class="section">
+            <h2 class="section-title" data-lang="lv">Sazinies ar mums</h2>
+            <h2 class="section-title" data-lang="en" style="display: none;">Contact Us</h2>
+            
+            <div class="contact-container">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3 class="contact-title">WhatsApp</h3>
+                    <div class="contact-info">+666 66 666 667</div>
+                    <a href="https://wa.me/6666666667" target="_blank" class="contact-link" data-lang="lv">Rakstīt</a>
+                    <a href="https://wa.me/6666666667" target="_blank" class="contact-link" data-lang="en" style="display: none;">Message</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h3 class="contact-title">Instagram</h3>
+                    <div class="contact-info">@nga_design</div>
+                    <a href="https://www.instagram.com/gyat" target="_blank" class="contact-link" data-lang="lv">Sekot</a>
+                    <a href="https://www.instagram.com/gyat" target="_blank" class="contact-link" data-lang="en" style="display: none;">Follow</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3 class="contact-title">Telegram</h3>
+                    <div class="contact-info">@nga_design</div>
+                    <a href="https://t.me/yourusername" target="_blank" class="contact-link" data-lang="lv">Pievienoties</a>
+                    <a href="https://t.me/yourusername" target="_blank" class="contact-link" data-lang="en" style="display: none;">Join</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="contact-title" data-lang="lv">Tālrunis</h3>
+                    <h3 class="contact-title" data-lang="en" style="display: none;">Phone</h3>
+                    <div class="contact-info">+666 66 666 667</div>
+                    <a href="tel:+66666666667" class="contact-link" data-lang="lv">Zvanīt</a>
+                    <a href="tel:+66666666667" class="contact-link" data-lang="en" style="display: none;">Call</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="contact-title">E-pasts</h3>
+                    <div class="contact-info">NGA@Design.com</div>
+                    <a href="mailto:NGA@Design.com" class="contact-link" data-lang="lv">Rakstīt</a>
+                    <a href="mailto:NGA@Design.com" class="contact-link" data-lang="en" style="display: none;">Email</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="contact-title" data-lang="lv">Adrese</h3>
+                    <h3 class="contact-title" data-lang="en" style="display: none;">Address</h3>
+                    <div class="contact-info" data-lang="lv">Rīga, Latvija</div>
+                    <div class="contact-info" data-lang="en" style="display: none;">Riga, Latvia</div>
+                    <a href="https://maps.google.com" target="_blank" class="contact-link" data-lang="lv">Karte</a>
+                    <a href="https://maps.google.com" target="_blank" class="contact-link" data-lang="en" style="display: none;">Map</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© NGA Design Solutions 2025</p>
+    </footer>
+
+    <!-- Floating Button -->
+    <a href="https://form.typeform.com/to/LAqnPm8V" class="floating-button" title="Uzņēmuma prezentācija" target="_blank">
+        <img src="https://th.bing.com/th/id/OIP.0SHUlAwMwh_VO2JRCw9YnAHaHa?rs=1&pid=ImgDetMain" alt="Logo">
+    </a>
+
+    <script>
+        // Sadaļu pārslēgšana
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+            
+            // Pārvietot skatu uz sadaļas sākumu
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Tēmas pārslēgšana
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            // Saglabā izvēli localStorage
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDark);
+            
+            if (isDark) {
+                themeToggle.textContent = '☀️';
+            } else {
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        // Pārbauda localStorage un uzstāda tēmu
+        function checkTheme() {
+            const darkTheme = localStorage.getItem('darkTheme') === 'true';
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (darkTheme) {
+                body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+            } else {
+                body.classList.remove('dark-theme');
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        // Valodas pārslēgšana
+        function toggleLanguage() {
+            const currentLang = document.documentElement.getAttribute('lang');
+            const newLang = currentLang === 'lv' ? 'en' : 'lv';
+            document.documentElement.setAttribute('lang', newLang);
+
+            // Pārslēdz tekstu
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                if (element.getAttribute('data-lang') === newLang) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+
+            // Pārslēdz pogu tekstus
+            document.querySelectorAll('nav button').forEach(button => {
+                if (button.getAttribute('data-lang') === newLang) {
+                    button.style.display = '';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            // Pārslēdz karogu
+            const languageToggle = document.querySelector('.language-toggle');
+            if (newLang === 'lv') {
+                languageToggle.style.backgroundImage = "url('https://flagcdn.com/lv.svg')";
+            } else {
+                languageToggle.style.backgroundImage = "url('https://flagcdn.com/gb.svg')";
+            }
+            
+            // Saglabā izvēli localStorage
+            localStorage.setItem('language', newLang);
+        }
+
+        // Pārbauda localStorage un uzstāda valodu
+        function checkLanguage() {
+            const savedLang = localStorage.getItem('language') || 'lv';
+            document.documentElement.setAttribute('lang', savedLang);
+            
+            // Pārslēdz tekstu
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                if (element.getAttribute('data-lang') === savedLang) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+
+            // Pārslēdz pogu tekstus
+            document.querySelectorAll('nav button').forEach(button => {
+                if (button.getAttribute('data-lang') === savedLang) {
+                    button.style.display = '';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            // Uzstāda karogu
+            const languageToggle = document.querySelector('.language-toggle');
+            if (savedLang === 'lv') {
+                languageToggle.style.backgroundImage = "url('https://flagcdn.com/lv.svg')";
+            } else {
+                languageToggle.style.backgroundImage = "url('https://flagcdn.com/gb.svg')";
+            }
+        }
+
+        // Inicializācija
+        document.addEventListener('DOMContentLoaded', function() {
+            checkTheme();
+            checkLanguage();
+            
+            // Pievieno smooth scroll uz visiem iekšējiem saitēm
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+<script src="https://static.app/js/static.js" type="text/javascript"></script>
+</body>
+</html>
